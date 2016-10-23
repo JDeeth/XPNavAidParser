@@ -12,6 +12,7 @@
  */
 
 #include <algorithm>
+#include <fstream>
 #include <iostream>
 #include <iterator>
 #include <string>
@@ -110,11 +111,14 @@ public:
       }
     }
 
-    if (tokens[8] == "Decca") {
+    auto tok8 = tokens[8];
+    std::transform(tok8.begin(), tok8.end(), tok8.begin(), ::toupper);
+    if (tok8 == "DECCA") {
       try {
         tokens[9];
       } catch (std::invalid_argument e) {
-        std::cerr << "Needs Master|Red|Green|Purple after 'Decca'" << std::endl;
+        std::cerr << dat_row << std::endl
+                  << "Needs Master|Red|Green|Purple after 'Decca'" << std::endl;
         throw e;
       }
       auto decca_type = tokens[9];
@@ -131,6 +135,7 @@ public:
     }
   }
 
+  Type type() const { return m_type; }
   double lat_deg() const { return m_lat; }
   double lon_deg() const { return m_lon; }
   int elev_ft() const { return m_elev_ft; }
@@ -152,3 +157,24 @@ private:
   std::string m_name;
   bool m_standalone;
 };
+
+std::vector<NavAid> ParseEarthNavDat(std::string filepath = "earth_nav.dat") {
+  std::vector<NavAid> navaids;
+  std::ifstream navdat(filepath);
+  std::string line;
+  if (navdat.is_open()) {
+    // ignore status and notice lines at top of file
+    getline(navdat, line);
+    getline(navdat, line);
+    while (getline(navdat, line) && line != "99") {
+      try {
+        if (line.size() > 0)
+          navaids.push_back(line);
+      } catch (std::exception e) {
+        std::cerr << e.what() << std::endl;
+      }
+    }
+  }
+  navdat.close();
+  return navaids;
+}
