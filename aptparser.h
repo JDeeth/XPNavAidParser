@@ -44,8 +44,7 @@ std::vector<Airport> ParseAptDat(std::string filepath = "apt.dat") {
         // lines beginning with 1 denote a new land airport.
         // lines beginning with 100 denote a runway.
         if (tkn[0] == "1") {
-          // todo: handle airports with spaces in the names
-          airports.push_back({tkn[4], tkn[5]});
+          airports.push_back({tkn[4], detokenise(tkn.begin() + 5, tkn.end())});
         } else if (tkn[0] == "100") {
           vec2 start{stof(tkn[9]), stof(tkn[10])};
           vec2 end{stof(tkn[18]), stof(tkn[19])};

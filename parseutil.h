@@ -8,6 +8,10 @@
 
 using vec2 = std::pair<double, double>;
 
+std::ostream &operator<<(std::ostream &out, const vec2 &v) {
+  return out << v.first << "," << v.second;
+}
+
 using tokens = std::vector<std::string>;
 
 tokens tokenise(std::string line) {
