@@ -142,6 +142,9 @@ public:
   std::string name() const { return m_name; }
   bool standalone() const { return m_standalone; }
 
+  // I think this is not approved by Scott Meyer's "Effective C++"...
+  bool isValid() const { return m_type != Type::invalid;}
+
 private:
   vec2 m_latlon;
   Type m_type;
