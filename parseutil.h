@@ -20,13 +20,6 @@ public:
   angle(double degrees) : m_deg{degrees} {}
 };
 
-//class latitude : public angle {
-//public:
-//  angle colat() { return angle(90. - m_deg); }
-//  latitude() = default;
-//  latitude(double degrees) : angle{degrees} {}
-//};
-
 struct coord {
   angle lat;
   angle lon;

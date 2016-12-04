@@ -90,7 +90,7 @@ public:
       m_type = Type::other;
     }
 
-    m_latlon = {stof(tkn[1]),stof(tkn[2])};
+    m_latlon = {stof(tkn[1]), stof(tkn[2])};
     m_elev_ft = stoi(tkn[3]);
 
     if (m_type == Type::outer_marker || m_type == Type::middle_marker ||
@@ -143,7 +143,7 @@ public:
   bool standalone() const { return m_standalone; }
 
   // I think this is not approved by Scott Meyer's "Effective C++"...
-  bool isValid() const { return m_type != Type::invalid;}
+  bool isValid() const { return m_type != Type::invalid; }
 
 private:
   vec2 m_latlon;
@@ -190,6 +190,9 @@ struct DeccaChain {
 std::vector<DeccaChain> BuildDeccaChains(std::vector<NavAid> navaids) {
   std::vector<DeccaChain> chains;
   for (auto n : navaids) {
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wswitch"
     switch (n.type()) {
     case NavAid::Type::decca_master:
       chains.push_back({});
@@ -210,6 +213,8 @@ std::vector<DeccaChain> BuildDeccaChains(std::vector<NavAid> navaids) {
       chains.back().purple = n;
       break;
     }
+#pragma GCC diagnostic pop
+
   }
   return chains;
 }
